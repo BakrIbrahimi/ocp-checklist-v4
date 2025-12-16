@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCP Group - Checklist Nettoyage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA+ElEQVQ4jZ2TsUoDQRCGv7m9kFwO0UJ8Ah/AQrS0sBARbCzEQrCwFQuxtLGw9Ql8AxsLCxvBQhBBQdDKwkoQFPEm/3Z3LOLlEpOD3O3sN/+3M7vDwhhjAQ7wAa+E5AF0gHXAA5zU9wsoAC2gCawBOrU8AY+Ztj+Cp4AqoIBH4C7T7xTYLQ24AM6A28z4U+AU2M8JqAL7wEUmeAicAAe5AQrYBS4zwUNgBMwB5TyJ+l4A1oFCIKAPbAO1VPAz8AR4wCZQigN6wD5QiRteI8MLoA5ocTZ3YgAAAABJRU5ErkJggg==">
+</head>
+<body>
+    <div class="container" id="main-container">
+        <!-- Header -->
+        <header>
+            <div class="logo-section">
+                <div class="logo-placeholder">
+                    <div class="ocp-logo">OCP</div>
+                </div>
+                <div class="header-text">
+                    <h1>OCP Group - Rapport de Fin de Poste</h1>
+                    <p>Checklist des Travaux de Nettoyage</p>
+                </div>
+            </div>
+            <div class="date-display">
+                <div id="current-date"></div>
+            </div>
+        </header>
+        
+        <!-- Mode sélection -->
+        <div class="mode-selector">
+            <button class="btn btn-primary active" id="btn-new-report">
+                <i class="fas fa-plus-circle"></i> Nouveau Rapport
+            </button>
+            <button class="btn btn-secondary" id="btn-view-reports">
+                <i class="fas fa-history"></i> Rapports Sauvegardés
+            </button>
+        </div>
+        
+        <!-- Section Nouveau Rapport -->
+        <section id="new-report-section" class="active-section">
+            <div class="info-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="storage-hall">Hall de stockage</label>
+                        <select id="storage-hall">
+                            <option value="HE06 JFC2">HE06 JFC2</option>
+                            <option value="HE06 JFC4" selected>HE06 JFC4</option>
+                            <option value="HE03">HE03</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="responsible">Responsable des travaux</label>
+                        <input type="text" id="responsible" placeholder="Nom du responsable">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="staff-count">Effectif</label>
+                        <input type="number" id="staff-count" min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="start-time">Heure début</label>
+                        <input type="time" id="start-time">
+                    </div>
+                    <div class="form-group">
+                        <label for="end-time">Heure fin</label>
+                        <input type="time" id="end-time">
+                    </div>
+                </div>
+            </div>
+            
+            <section class="stats-section">
+                <div class="stat-card">
+                    <h3>Taux de réalisation du planning</h3>
+                    <div class="stat-value" id="planning-rate">0%</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Tâches réalisées</h3>
+                    <div class="stat-value" id="tasks-done">0/0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Tâches planifiées</h3>
+                    <div class="stat-value" id="tasks-planned">0</div>
+                </div>
+            </section>
+            
+            <div class="action-buttons">
+                <button class="btn btn-reset" id="reset-all">
+                    <i class="fas fa-redo"></i> Tout réinitialiser
+                </button>
+                <button class="btn btn-primary" id="save-local">
+                    <i class="fas fa-save"></i> Sauvegarder localement
+                </button>
+                <button class="btn btn-primary btn-server" id="save-server">
+                    <i class="fas fa-cloud-upload-alt"></i> Sauvegarder sur le serveur
+                </button>
+                <button class="btn btn-whatsapp" id="share-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Partager via WhatsApp
+                </button>
+            </div>
+            
+            <section class="table-section">
+                <h2>Checklist des travaux de nettoyage</h2>
+                <div class="table-container">
+                    <table id="checklist-table">
+                        <thead>
+                            <tr>
+                                <th width="15%">Hall / Lieu</th>
+                                <th width="20%">Désignation</th>
+                                <th width="10%">Planifié (Oui/Non)</th>
+                                <th width="15%">Statut</th>
+                                <th width="15%">Photo avant</th>
+                                <th width="15%">Photo après</th>
+                                <th width="10%">Commentaire</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checklist-body">
+                            <!-- Les données seront insérées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <div class="export-buttons">
+                <button class="btn btn-export" id="export-excel">
+                    <i class="fas fa-file-excel"></i> Exporter Excel
+                </button>
+                <button class="btn btn-export" id="export-csv">
+                    <i class="fas fa-file-csv"></i> Exporter CSV
+                </button>
+                <button class="btn btn-export" id="export-pdf">
+                    <i class="fas fa-file-pdf"></i> Exporter PDF
+                </button>
+                <button class="btn btn-export" id="export-word">
+                    <i class="fas fa-file-word"></i> Exporter Word
+                </button>
+            </div>
+        </section>
+        
+        <!-- Section Rapports Sauvegardés -->
+        <section id="saved-reports-section" class="hidden-section">
+            <div class="section-header">
+                <h2><i class="fas fa-history"></i> Rapports Sauvegardés</h2>
+                <div class="report-filters">
+                    <input type="text" id="search-reports" placeholder="Rechercher par hall ou responsable...">
+                    <input type="date" id="filter-date">
+                    <select id="filter-hall">
+                        <option value="">Tous les halls</option>
+                        <option value="HE06 JFC2">HE06 JFC2</option>
+                        <option value="HE06 JFC4">HE06 JFC4</option>
+                        <option value="HE03">HE03</option>
+                    </select>
+                    <button class="btn btn-secondary" id="refresh-reports">
+                        <i class="fas fa-sync-alt"></i> Actualiser
+                    </button>
+                    <button class="btn btn-export" id="export-all-reports">
+                        <i class="fas fa-download"></i> Exporter tous
+                    </button>
+                </div>
+            </div>
+            
+            <div class="reports-grid" id="reports-grid">
+                <!-- Les rapports seront chargés ici -->
+                <div class="loading-reports">
+                    <div class="loader"></div>
+                    <p>Chargement des rapports...</p>
+                </div>
+            </div>
+            
+            <div class="pagination" id="reports-pagination">
+                <!-- La pagination sera générée ici -->
+            </div>
+        </section>
+        
+        <!-- Section Détail Rapport -->
+        <section id="report-detail-section" class="hidden-section">
+            <div class="detail-header">
+                <button class="btn btn-secondary" id="back-to-reports">
+                    <i class="fas fa-arrow-left"></i> Retour aux rapports
+                </button>
+                <h2 id="detail-title">Détails du Rapport</h2>
+                <button class="btn btn-primary" id="view-all-photos">
+                    <i class="fas fa-images"></i> Voir toutes les photos
+                </button>
+            </div>
+            
+            <div class="detail-content" id="report-detail-content">
+                <!-- Les détails du rapport seront chargés ici -->
+            </div>
+        </section>
+        
+        <footer>
+            <p>OCP Group - Application de gestion des travaux de nettoyage</p>
+            <p>© <span id="current-year"></span> - Tous droits réservés</p>
+        </footer>
+    </div>
+
+    <!-- Input file caché pour les photos -->
+    <input type="file" id="photo-input" accept="image/*" style="display: none;" multiple>
+    
+    <!-- Modal pour les photos individuelles -->
+    <div id="photo-modal" class="modal">
+        <div class="modal-content modal-lg">
+            <button class="modal-close">&times;</button>
+            <div class="photo-modal-header">
+                <h3 id="photo-modal-title"></h3>
+                <p id="photo-modal-description" class="photo-description"></p>
+            </div>
+            <div class="photo-modal-body">
+                <img id="photo-modal-image" src="" alt="Photo">
+            </div>
+            <div class="photo-modal-footer">
+                <button class="btn btn-secondary" id="download-photo">
+                    <i class="fas fa-download"></i> Télécharger
+                </button>
+                <button class="btn btn-secondary" id="prev-photo">
+                    <i class="fas fa-chevron-left"></i> Précédent
+                </button>
+                <span id="photo-counter">1/1</span>
+                <button class="btn btn-secondary" id="next-photo">
+                    <i class="fas fa-chevron-right"></i> Suivant
+                </button>
+                <button class="btn btn-primary" onclick="closePhotoModal()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal galerie photos complète -->
+    <div id="gallery-modal" class="modal">
+        <div class="modal-content modal-xl">
+            <button class="modal-close">&times;</button>
+            <div class="gallery-header">
+                <h3><i class="fas fa-images"></i> Galerie Photos du Rapport</h3>
+                <div class="gallery-info">
+                    <span id="gallery-report-info"></span>
+                    <span id="gallery-photo-count"></span>
+                </div>
+            </div>
+            <div class="gallery-filters">
+                <select id="gallery-filter-type">
+                    <option value="all">Toutes les photos</option>
+                    <option value="before">Photos avant</option>
+                    <option value="after">Photos après</option>
+                </select>
+                <select id="gallery-filter-status">
+                    <option value="all">Tous les statuts</option>
+                    <option value="fait">Tâches faites</option>
+                    <option value="non-fait">Tâches non faites</option>
+                    <option value="partiel">Tâches partielles</option>
+                </select>
+            </div>
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Les photos de la galerie seront chargées ici -->
+            </div>
+            <div class="gallery-footer">
+                <button class="btn btn-primary" onclick="closeGalleryModal()">
+                    <i class="fas fa-times"></i> Fermer la galerie
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmation -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirm-title">Confirmation</h3>
+            <p id="confirm-message"></p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="confirm-cancel">Annuler</button>
+                <button class="btn btn-primary" id="confirm-ok">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal chargement -->
+    <div id="loading-modal" class="modal">
+        <div class="modal-content">
+            <div class="loading-content">
+                <div class="loader-lg"></div>
+                <p id="loading-message">Chargement en cours...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
